@@ -1,5 +1,7 @@
 # Plugin for OctoPrint - displays temperatures on navbar
 
+![NavbarTemp](navbar.png?raw=true) 
+
 ## Setup
 
 Install the plugin like you would install any regular Python package from source:
