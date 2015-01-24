@@ -1,0 +1,10 @@
+<!-- ko foreach: navBarTempModel.tools -->
+<p class="nav navbar-text" data-bind="template: { name: 'navbartemp-template' }"></p>
+<!-- /ko -->
+<p class="nav navbar-text" data-bind="template: { name: 'navbartemp-template', data: navBarTempModel.bedTemp }, visible: navBarTempModel.hasBed"></p>
+
+<script type="text/html" id="navbartemp-template">
+    <span data-bind="text: name"></span>
+    <span> - </span>
+    <span data-bind="html: formatTemperature(actual())"></span>
+</script>

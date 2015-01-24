@@ -1,0 +1,47 @@
+.navbar-inner-text (@base) {
+  color: @text-color;
+}
+
+.navbar-inner-color (@base) {
+  @text-color-light: #f2f2f2;
+  @text-color-dark: #333333;
+  @text-color: contrast(@base, @text-color-dark, @text-color-light);
+
+  .nav>li>p {
+    .navbar-inner-text(@base);
+  }
+}
+
+#navbar .navbar-inner {
+  @base: #F2F2F2;
+  .navbar-inner-color(@base);
+
+  &.red {
+    @base: #F22828;
+    .navbar-inner-color(@base);
+  }
+  &.orange {
+    @base: #F27728;
+    .navbar-inner-color(@base);
+  }
+  &.yellow {
+    @base: #F2DE28;
+    .navbar-inner-color(@base);
+  }
+  &.green {
+    @base: #77FF28;
+    .navbar-inner-color(@base);
+  }
+  &.blue {
+    @base: #2877FF;
+    .navbar-inner-color(@base);
+  }
+  &.violet {
+    @base: #7728FF;
+    .navbar-inner-color(@base);
+  }
+  &.black {
+    @base: #383838;
+    .navbar-inner-color(@base);
+  }
+}
