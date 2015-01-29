@@ -7,10 +7,6 @@ __copyright__ = "Copyright (C) 2014 Jarek Szczepanski - Released under terms of 
 
 import octoprint.plugin
 
-def __plugin_init__():
-    global __plugin_implementations__
-    __plugin_implementations__ = [NavBarPlugin()]
-
 class NavBarPlugin(octoprint.plugin.TemplatePlugin, octoprint.plugin.AssetPlugin):
             
     ##~~ AssetPlugin API
@@ -23,6 +19,4 @@ class NavBarPlugin(octoprint.plugin.TemplatePlugin, octoprint.plugin.AssetPlugin
         } 
         
 __plugin_name__ = "Navbar Temperature Plugin"
-__plugin_version__ = "0.1"
-__plugin_description__ = "Displays temperatures on navbar"
-        
+__plugin_implementations__ = [NavBarPlugin()]

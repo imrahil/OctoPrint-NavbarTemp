@@ -1,39 +1,67 @@
 # coding=utf-8
 import setuptools
 
-plugin_package = "octoprint_navbartemp"
+########################################################################################################################
+
+plugin_identifier = "navbartemp"
+plugin_package = "octoprint_%s" % plugin_identifier
+plugin_name = "OctoPrint-NavbarTemp"
+plugin_version = "0.2"
+plugin_description = "Displays temperatures on navbar"
+plugin_author = "Jarek Szczepanski"
+plugin_author_email = "imrahil@imrahil.com"
+plugin_url = "https://github.com/imrahil/OctoPrint-NavbarTemp"
+plugin_license = "AGPLv3"
+plugin_additional_data = []
+
+########################################################################################################################
 
 def package_data_dirs(source, sub_folders):
-    import os
-    dirs = []
+	import os
+	dirs = []
 
-    for d in sub_folders:
-        for dirname, _, files in os.walk(os.path.join(source, d)):
-            dirname = os.path.relpath(dirname, source)
-            for f in files:
-                dirs.append(os.path.join(dirname, f))
+	for d in sub_folders:
+		folder = os.path.join(source, d)
+		if not os.path.exists(folder):
+			continue
 
-    return dirs
+		for dirname, _, files in os.walk(folder):
+			dirname = os.path.relpath(dirname, source)
+			for f in files:
+				dirs.append(os.path.join(dirname, f))
+
+	return dirs
 
 def params():
-    name = "OctoPrint-NavbarTemp"
-    version = "0.1"
-    author = "Jarek Szczepanski"
-    author_email = "imrahil@imrahil.com"
-    url = "https://github.com/imrahil/OctoPrint-NavbarTemp"
-    license = "AGPLv3"
-    
-    packages = [plugin_package]
-    package_data = {plugin_package: package_data_dirs(plugin_package, ['static', 'templates'])}
-    include_package_data = True
-    zip_safe = False
+	# Our metadata, as defined above
+	name = plugin_name
+	version = plugin_version
+	description = plugin_description
+	author = plugin_author
+	author_email = plugin_author_email
+	url = plugin_url
+	license = plugin_license
 
-    install_requires = open("requirements.txt").read().split("\n")
+	# we only have our plugin package to install
+	packages = [plugin_package]
 
-    entry_points = {
-        "octoprint.plugin": ["navbartemp = %s" % plugin_package]
-    }
+	# we might have additional data files in sub folders that need to be installed too
+	package_data = {plugin_package: package_data_dirs(plugin_package, ['static', 'templates', 'translations'] + plugin_additional_data)}
+	include_package_data = True
 
-    return locals()
+	# If you have any package data that needs to be accessible on the file system, such as templates or static assets
+	# this plugin is not zip_safe.
+	zip_safe = False
+
+	# Read the requirements from our requirements.txt file
+	install_requires = open("requirements.txt").read().split("\n")
+
+	# Hook the plugin into the "octoprint.plugin" entry point, mapping the plugin_identifier to the plugin_package.
+	# That way OctoPrint will be able to find the plugin and load it.
+	entry_points = {
+		"octoprint.plugin": ["%s = %s" % (plugin_identifier, plugin_package)]
+	}
+
+	return locals()
 
 setuptools.setup(**params())
