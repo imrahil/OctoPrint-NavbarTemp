@@ -19,4 +19,4 @@ class NavBarPlugin(octoprint.plugin.TemplatePlugin, octoprint.plugin.AssetPlugin
         } 
         
 __plugin_name__ = "Navbar Temperature Plugin"
-__plugin_implementations__ = [NavBarPlugin()]
+__plugin_implementation__ = NavBarPlugin()
