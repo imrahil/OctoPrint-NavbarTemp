@@ -8,5 +8,6 @@ $(function() {
     ADDITIONAL_VIEWMODELS.push([
         NavbarTempViewModel, 
         ["temperatureViewModel"], 
-        document.getElementById("navbar_plugin_navbartemp")]);
+        ["#navbar_plugin_navbartemp"]
+    ]);
 });
