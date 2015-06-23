@@ -36,7 +36,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
             if self.isRaspi:
                 self._logger.debug("Let's start RepeatedTimer!")
-                t = RepeatedTimer(1.0, self.checkRaspiTemp)
+                t = RepeatedTimer(30.0, self.checkRaspiTemp)
                 t.start()
         # else:
         #     t = RepeatedTimer(5.0, self.checkRaspiTemp)
@@ -45,12 +45,13 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         self._logger.debug("is Raspberry Pi? - %s" % self.isRaspi)
 
     def checkRaspiTemp(self):
-        import sarge
+        from sarge import run, Capture
 
         self._logger.debug("Checking Raspberry Pi internal temperature")
 
         # if sys.platform == "linux2":
-        p = sarge.run("/opt/vc/bin/vcgencmd measure_temp").returncode
+        p = run("/opt/vc/bin/vcgencmd measure_temp", stdout=Capture())
+        p = p.stdout.text
         # else:
         #     import random
         #
@@ -58,7 +59,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         #         return random.randint(0, int((stop - start) / step)) * step + start
         #
         #     p = "temp=%s'C" % randrange_float(5, 60, 0.1)
-        self._logger.debug("response: %s" % p)
+        self._logger.debug("response from sarge: %s" % p)
 
         match = re.search('=(.*)\'', p)
         if not match:
