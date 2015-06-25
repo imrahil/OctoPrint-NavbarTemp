@@ -16,6 +16,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
     def __init__(self):
         self.isRaspi = False
+        self.debugMode = False      # to simulate temp on Win/Mac
 
     def on_after_startup(self):
         if sys.platform == "linux2":
@@ -38,9 +39,10 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                 self._logger.debug("Let's start RepeatedTimer!")
                 t = RepeatedTimer(30.0, self.checkRaspiTemp)
                 t.start()
-        # else:
-        #     t = RepeatedTimer(5.0, self.checkRaspiTemp)
-        #     t.start()
+        elif self.debugMode:
+            self.isRaspi = True
+            t = RepeatedTimer(5.0, self.checkRaspiTemp)
+            t.start()
 
         self._logger.debug("is Raspberry Pi? - %s" % self.isRaspi)
 
@@ -49,16 +51,17 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
         self._logger.debug("Checking Raspberry Pi internal temperature")
 
-        # if sys.platform == "linux2":
-        p = run("/opt/vc/bin/vcgencmd measure_temp", stdout=Capture())
-        p = p.stdout.text
-        # else:
-        #     import random
-        #
-        #     def randrange_float(start, stop, step):
-        #         return random.randint(0, int((stop - start) / step)) * step + start
-        #
-        #     p = "temp=%s'C" % randrange_float(5, 60, 0.1)
+        if sys.platform == "linux2":
+            p = run("/opt/vc/bin/vcgencmd measure_temp", stdout=Capture())
+            p = p.stdout.text
+        elif self.debugMode:
+            import random
+
+            def randrange_float(start, stop, step):
+                return random.randint(0, int((stop - start) / step)) * step + start
+
+            p = "temp=%s'C" % randrange_float(5, 60, 0.1)
+
         self._logger.debug("response from sarge: %s" % p)
 
         match = re.search('=(.*)\'', p)
