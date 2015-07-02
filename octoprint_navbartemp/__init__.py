@@ -25,10 +25,10 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             # Match a line like 'Hardware   : BCM2709'
             match = re.search('^Hardware\s+:\s+(\w+)$', cpuinfo, flags=re.MULTILINE | re.IGNORECASE)
 
-            if not match:
+            if match is None:
                 # Couldn't find the hardware, assume it isn't a pi.
                 self.isRaspi = False
-            if match.group(1) == 'BCM2708':
+            elif match.group(1) == 'BCM2708':
                 self._logger.debug("Pi 1")
                 self.isRaspi = True
             elif match.group(1) == 'BCM2709':
