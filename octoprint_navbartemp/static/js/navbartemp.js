@@ -3,8 +3,13 @@ $(function() {
         var self = this;
 
         self.navBarTempModel = parameters[0];
+        self.global_settings = parameters[1];
         self.raspiTemp = ko.observable();
         self.isRaspi = ko.observable(false);
+
+        self.onBeforeBinding = function () {
+            self.settings = self.global_settings.settings.plugins.navbartemp;
+        };
 
         self.onDataUpdaterPluginMessage = function(plugin, data) {
             if (plugin != "navbartemp") {
@@ -24,8 +29,8 @@ $(function() {
 
     ADDITIONAL_VIEWMODELS.push([
         NavbarTempViewModel, 
-        ["temperatureViewModel"], 
-        ["#navbar_plugin_navbartemp"]
+        ["temperatureViewModel", "settingsViewModel"],
+        ["#navbar_plugin_navbartemp", "#settings_plugin_navbartemp"]
     ]);
 });
 
