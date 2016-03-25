@@ -38,7 +38,8 @@ function formatBarTemperature(toolName, actual, target) {
     var output = toolName + ": " + _.sprintf("%.1f&deg;C", actual);
 
     if (target) {
-        output += " \u21D7 " + _.sprintf("%.1f&deg;C", target);
+        var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
+        output += sign + _.sprintf("%.1f&deg;C", target);
     }
 
     return output;
