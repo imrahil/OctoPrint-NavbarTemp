@@ -1,4 +1,5 @@
 <p class="nav navbar-text" data-bind="html: raspiTemp, visible: isRaspi"></p>
+<p class="nav navbar-text" data-bind="html: odroidXU3Temp, visible: isOdroidXU3"></p>
 <div data-bind="visible: navBarTempModel.isOperational()" class="nav">
     <!-- ko foreach: navBarTempModel.tools -->
     <p class="nav navbar-text" data-bind="template: { name: 'navbartemp-template' }"></p>
