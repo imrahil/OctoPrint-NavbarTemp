@@ -7,6 +7,17 @@ $(function() {
         self.raspiTemp = ko.observable();
         self.isRaspi = ko.observable(false);
 
+        self.formatBarTemperature = function(toolName, actual, target) {
+            var output = toolName + ": " + _.sprintf("%.1f&deg;C", actual);
+
+            if (target) {
+                var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
+                output += sign + _.sprintf("%.1f&deg;C", target);
+            }
+
+            return output;
+        };
+
         self.onBeforeBinding = function () {
             self.settings = self.global_settings.settings.plugins.navbartemp;
         };
@@ -33,14 +44,3 @@ $(function() {
         ["#navbar_plugin_navbartemp", "#settings_plugin_navbartemp"]
     ]);
 });
-
-function formatBarTemperature(toolName, actual, target) {
-    var output = toolName + ": " + _.sprintf("%.1f&deg;C", actual);
-
-    if (target) {
-        var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
-        output += sign + _.sprintf("%.1f&deg;C", target);
-    }
-
-    return output;
-};
