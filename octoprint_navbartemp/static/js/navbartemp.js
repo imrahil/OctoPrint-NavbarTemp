@@ -8,7 +8,17 @@ $(function() {
         self.isRaspi = ko.observable(false);
 
         self.formatBarTemperature = function(toolName, actual, target) {
-            var output = toolName + ": " + _.sprintf("%.1f&deg;C", actual);
+            var displayName = "";
+            
+            if (toolName == "Tool" || toolName == "End" || toolName == "Hotend" || toolName == "Hot End") {
+                displayName = self.settings.displayNames.hotend;
+            } else if (toolName == "Bett" || toolName == "Bed") {
+                displayName = self.settings.displayNames.bed;
+            } else {
+               displayName = toolName + ":";
+            }
+            
+            var output = _.sprintf("%s %.1f&deg;C", displayName, actual);
 
             if (target) {
                 var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
@@ -34,7 +44,7 @@ $(function() {
                 self.isRaspi(true);
             }
 
-            self.raspiTemp(_.sprintf("Raspi: %.1f&deg;C", data.raspitemp));
+            self.raspiTemp(_.sprintf("%s %.1f&deg;C", self.settings.displayNames.raspi, data.raspitemp));
         };
     }
 
