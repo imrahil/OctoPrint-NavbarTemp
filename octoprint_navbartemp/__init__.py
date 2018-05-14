@@ -19,6 +19,9 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         self.isRaspi = False
         self.debugMode = False      # to simulate temp on Win/Mac
         self.displayRaspiTemp = True
+        self.bedTempDisplayName = "Bed:"
+        self.hotendTempDisplayName = "Hotend:"
+        self.raspiTempDisplayName = "Raspi:"
         self._checkTempTimer = None
 
     def on_after_startup(self):
@@ -40,17 +43,17 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             elif match.group(1) == 'BCM2709':
                 self._logger.debug("Pi 2")
                 self.isRaspi = True
-	    elif match.group(1) == 'BCM2835':
-		self._logger.debug("Pi 3")
-		self.isRaspi = True
+            elif match.group(1) == 'BCM2835':
+                self._logger.debug("Pi 3")
+                self.isRaspi = True
 
             if self.isRaspi and self.displayRaspiTemp:
                 self._logger.debug("Let's start RepeatedTimer!")
                 self.startTimer(30.0)
-        elif self.debugMode:
-            self.isRaspi = True
-            if self.displayRaspiTemp:
-                self.startTimer(5.0)
+            elif self.debugMode:
+                self.isRaspi = True
+                if self.displayRaspiTemp:
+                    self.startTimer(5.0)
 
         self._logger.debug("is Raspberry Pi? - %s" % self.isRaspi)
 
@@ -86,12 +89,20 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
 	##~~ SettingsPlugin
     def get_settings_defaults(self):
-        return dict(displayRaspiTemp = self.displayRaspiTemp)
+        return dict(displayRaspiTemp = self.displayRaspiTemp, displayNames = dict(
+                bed = self.bedTempDisplayName,
+                hotend = self.hotendTempDisplayName,
+                raspi = self.raspiTempDisplayName
+            )
+        )
 
     def on_settings_save(self, data):
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
 
         self.displayRaspiTemp = self._settings.get(["displayRaspiTemp"])
+        self.bedTempDisplayName = self._settings.get(["displayNames.bedTempDisplayName"])
+        self.hotendTempDisplayName = self._settings.get(["displayNames.hotendTempDisplayName"])
+        self.raspiTempDisplayName = self._settings.get(["displayNames.raspiTempDisplayName"])
 
         if self.displayRaspiTemp:
             interval = 5.0 if self.debugMode else 30.0
@@ -106,12 +117,9 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
 	##~~ TemplatePlugin API
     def get_template_configs(self):
-        if self.isRaspi:
-            return [
-                dict(type="settings", template="navbartemp_settings_raspi.jinja2")
-            ]
-        else:
-            return []
+        return [
+            dict(type="settings", template="navbartemp_settings.jinja2")
+        ]
 
     ##~~ AssetPlugin API
     def get_assets(self):
