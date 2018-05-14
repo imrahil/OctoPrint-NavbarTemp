@@ -40,17 +40,17 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             elif match.group(1) == 'BCM2709':
                 self._logger.debug("Pi 2")
                 self.isRaspi = True
-	    elif match.group(1) == 'BCM2835':
-		self._logger.debug("Pi 3")
-		self.isRaspi = True
+            elif match.group(1) == 'BCM2835':
+                self._logger.debug("Pi 3")
+                self.isRaspi = True
 
             if self.isRaspi and self.displayRaspiTemp:
                 self._logger.debug("Let's start RepeatedTimer!")
                 self.startTimer(30.0)
-        elif self.debugMode:
-            self.isRaspi = True
-            if self.displayRaspiTemp:
-                self.startTimer(5.0)
+            elif self.debugMode:
+                self.isRaspi = True
+                if self.displayRaspiTemp:
+                    self.startTimer(5.0)
 
         self._logger.debug("is Raspberry Pi? - %s" % self.isRaspi)
 
