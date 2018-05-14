@@ -117,12 +117,9 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
 	##~~ TemplatePlugin API
     def get_template_configs(self):
-        if self.isRaspi:
-            return [
-                dict(type="settings", template="navbartemp_settings_raspi.jinja2")
-            ]
-        else:
-            return []
+        return [
+            dict(type="settings", template="navbartemp_settings.jinja2")
+        ]
 
     ##~~ AssetPlugin API
     def get_assets(self):

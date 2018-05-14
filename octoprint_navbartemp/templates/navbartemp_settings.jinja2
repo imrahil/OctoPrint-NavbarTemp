@@ -1,0 +1,30 @@
+<h4>Configuration for Raspberry Pi</h4>
+
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="settings-navbartemp-bedtemp-displayname">Bed Temp Displayname:</label>
+        <div class="controls">
+            <input type="text" name="settings-navbartemp-bedtemp-displayname" data-bind="value: settings.displayNames.bed"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="settings-navbartemp-hotendtemp-displayname">Hotend Displayname:</label>
+        <div class="controls">
+            <input type="text" name="settings-navbartemp-hotendtemp-displayname" data-bind="value: settings.displayNames.hotend"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="settings-navbartemp-display"></label>
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: settings.displayRaspiTemp"> Display internal temperature
+            </label>
+        </div>
+    </div>
+    <div class="control-group" data-bind="visible: settings.displayRaspiTemp">
+        <label class="control-label" for="settings-navbartemp-raspitemp-displayname">RasPi Displayname:</label>
+        <div class="controls">
+            <input type="text" name="settings-navbartemp-raspitemp-displayname" data-bind="value: settings.displayNames.raspi"/>
+        </div>
+    </div>
+</form>
