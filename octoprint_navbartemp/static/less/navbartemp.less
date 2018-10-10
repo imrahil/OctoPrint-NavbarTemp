@@ -1,47 +1,58 @@
-.navbar-inner-text (@base) {
-  color: @text-color;
+@default-shadow:    #c8c8c8;
+@black-shadow:      #5e5e5e;
+@red-shadow:        #d86761;
+@blue-shadow:       #1a66ff;
+@green-shadow:      #50da00;
+@yellow-shadow:     #c2b00c;
+@violet-shadow:     #a774ff;
+@orange-shadow:     #f6a570;
+@white-shadow:      #c8c8c8;
+
+@whiteish:          #f2f2f2;
+@darkish:           #333;
+
+.navbar-inner {
+    .navbar-text {
+        color: @darkish;
+        text-shadow: 0 1px 0 @default-shadow;
+        cursor: default;
+    }
 }
 
-.navbar-inner-color (@base) {
-  @text-color-light: #f2f2f2;
-  @text-color-dark: #333333;
-  @text-color: contrast(@base, @text-color-dark, @text-color-light);
-
-  .nav>li>p, .nav>li>div>p {
-    .navbar-inner-text(@base);
-  }
+.navbar-inner {
+    &.blue,&.red,&.orange,&.yellow,&.violet,&.black {
+        .navbar-text {
+            color: @whiteish;
+        }
+    }
+    &.white .navbar-text {
+        color: @darkish;
+    }
 }
 
-#navbar .navbar-inner {
-  @base: #F2F2F2;
-  .navbar-inner-color(@base);
-
-  &.red {
-    @base: #F22828;
-    .navbar-inner-color(@base);
-  }
-  &.orange {
-    @base: #F27728;
-    .navbar-inner-color(@base);
-  }
-  &.yellow {
-    @base: #F2DE28;
-    .navbar-inner-color(@base);
-  }
-  &.green {
-    @base: #77FF28;
-    .navbar-inner-color(@base);
-  }
-  &.blue {
-    @base: #2877FF;
-    .navbar-inner-color(@base);
-  }
-  &.violet {
-    @base: #7728FF;
-    .navbar-inner-color(@base);
-  }
-  &.black {
-    @base: #383838;
-    .navbar-inner-color(@base);
-  }
+.navbar-inner {
+    &.black .navbar-text {
+        text-shadow: 0 1px 0 @black-shadow;
+    }
+    &.white .navbar-text {
+        text-shadow: 0 1px 0 @white-shadow;
+    }
+    &.red .navbar-text {
+        text-shadow: 0 1px 0 @red-shadow;
+    }
+    &.blue .navbar-text {
+        text-shadow: 0 1px 0 @blue-shadow;
+    }
+    &.green .navbar-text {
+        text-shadow: 0 1px 0 @green-shadow;
+    }
+    &.yellow .navbar-text {
+        text-shadow: 0 1px 0 @yellow-shadow;
+    }
+    &.orange .navbar-text {
+        text-shadow: 0 1px 0 @orange-shadow;
+    }
+    &.violet .navbar-text {
+        text-shadow: 0 1px 0 @violet-shadow;
+    }
 }

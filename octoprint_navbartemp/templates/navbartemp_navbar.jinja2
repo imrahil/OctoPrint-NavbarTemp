@@ -1,11 +1,7 @@
-<p class="nav navbar-text" data-bind="html: raspiTemp, visible: isRaspi"></p>
-<div data-bind="visible: navBarTempModel.isOperational()" class="nav">
-    <!-- ko foreach: navBarTempModel.tools -->
-    <p class="nav navbar-text" data-bind="template: { name: 'navbartemp-template' }"></p>
+<div class="navbar-text" data-bind="visible: temperatureModel.isOperational()">
+    <span id="socInfo" data-bind="attr: { title: 'System On Chip Temperature' }, html: socTemp,visible: hasSoc"></span>
+    <!-- ko foreach: temperatureModel.tools() --> 
+        <span id="toolInfo" data-bind="attr: { title: name() },html: $parent.formatBarTemperature(name(),  actual(), target())"></span>
     <!-- /ko -->
-    <p class="nav navbar-text" data-bind="template: { name: 'navbartemp-template', data: navBarTempModel.bedTemp }, visible: navBarTempModel.hasBed"></p>
+    <span id="bedInfo" data-bind="attr: { title: 'Bed' }, html: formatBarTemperature(temperatureModel.bedTemp.name(), temperatureModel.bedTemp.actual(), temperatureModel.bedTemp.target()), visible: temperatureModel.hasBed"></span>
 </div>
-
-<script type="text/html" id="navbartemp-template">
-    <span data-bind="html: $root.formatBarTemperature(name(), actual(), target())"></span>
-</script>
