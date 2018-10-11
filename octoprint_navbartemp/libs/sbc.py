@@ -117,4 +117,17 @@ class Armbian(SBC):
         self._logger = logger
 
     def parse_tepmerature(self, re_output):
-        return float(re_output.group(1)) / 1000
+        """
+        We are expecting that temp of SoC will be no more that 3 digit int. Armbian on Odroid is returning ex 44000 but
+        on orangePi 26
+        :param re_output:
+        :return:
+        """
+        # TODO: depending on situation in the future maybe it will be necessary to split it.
+        temp = re_output.group(1)
+        if temp.len() == 2 or temp.len() == 3:
+            return float(temp)
+        elif temp.len() >= 4:
+            return float(re_output.group(1)) / 1000
+
+        return float(re_output.group(1))
