@@ -125,9 +125,9 @@ class Armbian(SBC):
         """
         # TODO: depending on situation in the future maybe it will be necessary to split it.
         temp = re_output.group(1)
-        if temp.len() == 2 or temp.len() == 3:
+        if len(temp) == 2 or len(temp) == 3:
             return float(temp)
-        elif temp.len() >= 4:
+        elif len(temp) >= 4:
             return float(re_output.group(1)) / 1000
 
         return float(re_output.group(1))
