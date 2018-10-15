@@ -94,22 +94,21 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             "less": ["less/navbartemp.less"]
         }
 
-        ##~~ Softwareupdate hook
-
+    ##~~ Softwareupdate hook
     def get_update_information(self):
         return dict(
+
             navbartemp=dict(
                 displayName="Navbar Temperature Plugin",
                 displayVersion=self._plugin_version,
-
                 # version check: github repository
                 type="github_release",
-                user="ntoff",
+                user="imrahil",
                 repo="OctoPrint-NavbarTemp",
                 current=self._plugin_version,
 
                 # update method: pip w/ dependency links
-                pip="https://github.com/ntoff/OctoPrint-NavbarTemp/archive/{target_version}.zip"
+                pip="https://github.com/imrahil/OctoPrint-NavbarTemp/archive/{target_version}.zip"
             )
         )
 
