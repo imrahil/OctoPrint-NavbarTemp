@@ -2,8 +2,6 @@
 
 ![NavbarTemp](navbar.png?raw=true) 
 
-For Raspberry Pi users it's possible to display internal temperature (configurable via settings dialog):
-![NavbarTempRaspi](navbar_raspi.png?raw=true) 
 
 ## Setup
 
