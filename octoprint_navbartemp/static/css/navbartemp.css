@@ -1,1 +1,40 @@
-#navbar .navbar-inner .nav>li>div>p,#navbar .navbar-inner .nav>li>p{color:#333}#navbar .navbar-inner.orange .nav>li>div>p,#navbar .navbar-inner.orange .nav>li>p,#navbar .navbar-inner.red .nav>li>div>p,#navbar .navbar-inner.red .nav>li>p{color:#f2f2f2}#navbar .navbar-inner.green .nav>li>div>p,#navbar .navbar-inner.green .nav>li>p,#navbar .navbar-inner.yellow .nav>li>div>p,#navbar .navbar-inner.yellow .nav>li>p{color:#333}#navbar .navbar-inner.black .nav>li>div>p,#navbar .navbar-inner.black .nav>li>p,#navbar .navbar-inner.blue .nav>li>div>p,#navbar .navbar-inner.blue .nav>li>p,#navbar .navbar-inner.violet .nav>li>div>p,#navbar .navbar-inner.violet .nav>li>p{color:#f2f2f2}
+.navbar-inner .navbar-text {
+  color: #333;
+  text-shadow: 0 1px 0 #c8c8c8;
+  cursor: default;
+}
+.navbar-inner.blue .navbar-text,
+.navbar-inner.red .navbar-text,
+.navbar-inner.orange .navbar-text,
+.navbar-inner.yellow .navbar-text,
+.navbar-inner.violet .navbar-text,
+.navbar-inner.black .navbar-text {
+  color: #f2f2f2;
+}
+.navbar-inner.white .navbar-text {
+  color: #333;
+}
+.navbar-inner.black .navbar-text {
+  text-shadow: 0 1px 0 #5e5e5e;
+}
+.navbar-inner.white .navbar-text {
+  text-shadow: 0 1px 0 #c8c8c8;
+}
+.navbar-inner.red .navbar-text {
+  text-shadow: 0 1px 0 #d86761;
+}
+.navbar-inner.blue .navbar-text {
+  text-shadow: 0 1px 0 #1a66ff;
+}
+.navbar-inner.green .navbar-text {
+  text-shadow: 0 1px 0 #50da00;
+}
+.navbar-inner.yellow .navbar-text {
+  text-shadow: 0 1px 0 #c2b00c;
+}
+.navbar-inner.orange .navbar-text {
+  text-shadow: 0 1px 0 #f6a570;
+}
+.navbar-inner.violet .navbar-text {
+  text-shadow: 0 1px 0 #a774ff;
+}
