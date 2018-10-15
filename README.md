@@ -15,4 +15,4 @@ If you need support for additional platform, please inform us and add such infor
 And be ready for testing.
 
 ## Change notes:
-v 1.0 - added support for all platforms running under Armbian
+v 0.11 - added support for all platforms running under Armbian
