@@ -113,9 +113,9 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         )
 
 
-__plugin_name__ = "Navbar Temperature Plugin (ntoff mod)"
-__plugin_author__ = "Jarek Szczepanski (modified by ntoff)"
-__plugin_url__ = "https://github.com/ntoff/OctoPrint-NavbarTemp"
+__plugin_name__ = "Navbar Temperature Plugin"
+__plugin_author__ = "Jarek Szczepanski"
+__plugin_url__ = "https://github.com/imrahil/OctoPrint-NavbarTemp"
 
 
 def __plugin_load__():
