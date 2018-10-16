@@ -38,12 +38,11 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                 self._logger.debug("Let's start RepeatedTimer!")
                 self.startTimer(30.0)
         # debug mode doesn't work if the OS is linux on a regular pc
-        elif self.debugMode:
-            self.sbc.is_supported = True
-            if self.displayRaspiTemp:
-                self.startTimer(5.0)
+        try:
+            self._logger.debug("is supported? - %s" % self.sbc.is_supported)
+        except:
+            self._logger.debug("Embeded platform is not detected")
 
-        self._logger.debug("is supported? - %s" % self.sbc.is_supported)
 
     def startTimer(self, interval):
         self._checkTempTimer = RepeatedTimer(interval, self.updateSoCTemp, None, None, True)
@@ -79,11 +78,14 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
     ##~~ TemplatePlugin API
     def get_template_configs(self):
-        if self.sbc.is_supported:
-            return [
-                dict(type="settings", template="navbartemp_settings_raspi.jinja2")
-            ]
-        else:
+        try:
+            if self.sbc.is_supported:
+                return [
+                    dict(type="settings", template="navbartemp_settings_raspi.jinja2")
+                ]
+            else:
+                return []
+        except:
             return []
 
     ##~~ AssetPlugin API
