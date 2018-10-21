@@ -42,6 +42,8 @@ class SBCFactory(object):
         # Match a line like 'Hardware   : BCM2709'
         match = re.search('Hardware\s+:\s+(\w+)', cpuinfo, flags=re.MULTILINE | re.IGNORECASE)
 
+        if match is None: return
+
         if match.group(1) in self.piSocTypes:
             logger.info("Broadcom detected")
             return True
