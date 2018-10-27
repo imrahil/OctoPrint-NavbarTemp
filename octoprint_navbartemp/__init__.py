@@ -9,7 +9,6 @@ import octoprint.plugin
 from octoprint.util import RepeatedTimer
 import sys
 import os
-import re
 
 from .libs.sbc import SBCFactory
 
@@ -34,6 +33,8 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         self.piSocTypes = self._settings.get(["piSocTypes"])
         self.cmd = self._settings.get(["cmd"])
         self.cmd_name = self._settings.get(["cmd_name"])
+        self._logger.debug("Custom cmd name %r" % self.cmd_name)
+        self._logger.debug("Custom cmd %r" % self.cmd)
 
         if sys.platform == "linux2":
             self.sbc = SBCFactory().factory(self._logger)
@@ -41,19 +42,15 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             if self.sbc.is_supported and self.displayRaspiTemp:
                 self._logger.debug("Let's start RepeatedTimer!")
                 self.startTimer(30.0)
+            elif self.cmd_name:
+                self._checkTempTimer = RepeatedTimer(30.0, self.updateCustom, None, None, True)
+                self._checkTempTimer.start()
+
         # debug mode doesn't work if the OS is linux on a regular pc
         try:
             self._logger.debug("is supported? - %s" % self.sbc.is_supported)
         except:
             self._logger.debug("Embeded platform is not detected")
-
-        self._logger.debug("Custom cmd name %r" % self.cmd_name)
-        self._logger.debug("Custom cmd %r" % self.cmd)
-        self._checkTempTimer = RepeatedTimer(30.0, self.updateCustom, None, None, True)
-        self._checkTempTimer.start()
-
-
-
 
     def startTimer(self, interval):
         self._checkTempTimer = RepeatedTimer(interval, self.updateSoCTemp, None, None, True)
@@ -61,25 +58,28 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
     def updateSoCTemp(self):
         temp = self.sbc.checkSoCTemp()
-
         self._logger.debug("match: %s" % temp)
+        cmd_rtv = self.getCustomResult()
+
         self._plugin_manager.send_plugin_message(self._identifier,
                                                  dict(isSupported=self.sbc.is_supported,
                                                       soctemp=temp, cmd_result=cmd_rtv, cmd_name=self.cmd_name))
 
     def updateCustom(self):
+        cmd_rtv = self.getCustomResult()
+        self._plugin_manager.send_plugin_message(self._identifier,
+                                                 dict(isSupported=False, cmd_result=cmd_rtv, cmd_name=self.cmd_name))
+
+    def getCustomResult(self):
         cmd_rtv = None
         if self.cmd:
             try:
                 cmd_rtv = str(os.popen(self.cmd).read())
                 self._logger.debug("cmd_rtv: %s" % cmd_rtv)
+                return cmd_rtv
             except:
                 self._logger.debug("cmd error")
-
-        self._plugin_manager.send_plugin_message(self._identifier,
-                                                 dict(isSupported=True, cmd_result=cmd_rtv, cmd_name=self.cmd_name))
-
-
+                return ""
 
     ##~~ SettingsPlugin
     def get_settings_defaults(self):
@@ -111,7 +111,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         try:
             if self.sbc.is_supported:
                 return [
-                    dict(type="settings", template="navbartemp_settings_raspi.jinja2")
+                    dict(type="settings", template="navbartemp_settings_sbc.jinja2")
                 ]
             else:
                 return [dict(type="settings", template="navbartemp_settings.jinja2")]
@@ -146,7 +146,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
 
 __plugin_name__ = "Navbar Temperature Plugin"
-__plugin_author__ = "Jarek Szczepanski"
+__plugin_author__ = "Jarek Szczepanski & Cosik"
 __plugin_url__ = "https://github.com/imrahil/OctoPrint-NavbarTemp"
 
 

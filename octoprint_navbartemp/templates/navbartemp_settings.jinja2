@@ -1,26 +1,8 @@
-<h4>Configuration for custom commands</h4>
+<h4>{{ _('General') }}</h4>
 
 <form class="form-horizontal">
 
-    <div class="control-group">
-        <label class="control-label" for="settings-navbartemp-display"></label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.displayRaspiTemp"> Display internal temperature
-            </label>
-        </div>
-    </div>
+    {% include "navbartemp_settings_custom.jinja2" %}
 
 
-
-    <label class="control-label" for="ssettings-navbartemp-cmd_nameh">{{ _('Name') }}</label>
-    <div class="controls">
-        <div class="input-append">
-            <input type="text" class="input-block-level" data-bind="value: settings.cmd_name">
-        </div>
-    </div>
-    <label class="control-label" for="settings-navbartemp-cmd">{{ _('Cmd') }}</label>
-    <div class="controls">
-         <input type="text" class="input-block-level" data-bind="value: settings.cmd">
-    </div>
 </form>

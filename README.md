@@ -1,6 +1,6 @@
 # Plugin for OctoPrint - displays temperatures on navbar
 
-![NavbarTemp](navbar.png?raw=true) 
+![NavbarTemp](images/navbar.png?raw=true) 
 
 
 ## Setup
@@ -13,6 +13,15 @@ If you need support for additional platform, please inform us and add such infor
 * How to define platform type
 
 And be ready for testing.
+
+## Custom command
+Plugin is supporting up to one custom command, in navbar will be displayed raw output 
+of command.
+Example:
+![NavbarTemp](images/custom_cmd_cfg1.png?raw=true) 
+
+![NavbarTemp](images/custom_cmd_bar1.png?raw=true) 
+
 
 ## Change notes:
 v 0.11 - added support for all platforms running under Armbian
