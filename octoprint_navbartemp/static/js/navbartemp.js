@@ -42,11 +42,9 @@ $(function() {
                 output = _.sprintf("SoC: %.1f&deg;C", data.soctemp)
             }
             if (data.cmd_name) {
-                output +=  _.sprintf("%s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result)
+                output +=  _.sprintf(" %s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result)
             }
             self.socTemp(_.sprintf(output))
-
-//            self.socTemp(_.sprintf("%s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result)  + _.sprintf("%s", data.isSupported)+ _.sprintf("soctemp %s", data.soctemp));
 
         };
     }

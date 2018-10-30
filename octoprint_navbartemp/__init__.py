@@ -93,7 +93,8 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
 
         self.displayRaspiTemp = self._settings.get(["displayRaspiTemp"])
-
+        self.cmd = self._settings.get(["cmd"])
+        self.cmd_name = self._settings.get(["cmd_name"])
 
         if self.displayRaspiTemp:
             interval = 5.0 if self.debugMode else 30.0
