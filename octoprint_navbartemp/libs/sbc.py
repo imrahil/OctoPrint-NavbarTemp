@@ -67,8 +67,9 @@ class SBC(object):
     def checkSoCTemp(self):
         if self.is_supported:
             from sarge import run, Capture
-
-            self._logger.info("Checking SoC internal temperature")
+            
+            #The following generate a log entry every 30 sec, not very good to write so much to the SD card. uncomment for debugging purposes.
+            #self._logger.info("Checking SoC internal temperature")
             p = run(self.temp_cmd, stdout=Capture())
             if p.returncode == 1:
                 self.is_supported = False
