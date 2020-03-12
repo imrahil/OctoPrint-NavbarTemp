@@ -150,6 +150,9 @@ __plugin_name__ = "Navbar Temperature Plugin"
 __plugin_author__ = "Jarek Szczepanski & Cosik"
 __plugin_url__ = "https://github.com/imrahil/OctoPrint-NavbarTemp"
 
+# Starting with OctoPrint 1.4.0 OctoPrint will also support to run under Python 3 in addition to the deprecated
+# Python 2. New plugins should make sure to run under both versions for now.
+__plugin_pythoncompat__ = ">=2.7,<4" # python 2 and 3
 
 def __plugin_load__():
     global __plugin_implementation__
@@ -159,3 +162,4 @@ def __plugin_load__():
     __plugin_hooks__ = {
         "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
     }
+
