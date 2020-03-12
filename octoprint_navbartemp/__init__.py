@@ -10,7 +10,7 @@ from octoprint.util import RepeatedTimer
 import sys
 import os
 
-from .libs.sbc import SBCFactory
+from .libs.sbc import SBCFactory, SBC
 
 
 class NavBarPlugin(octoprint.plugin.StartupPlugin,
@@ -21,10 +21,10 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
     def __init__(self):
         self.piSocTypes = (["BCM2708", "BCM2709",
                             "BCM2835"])  # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
-        self.debugMode = False  # to simulate temp on Win/Mac
+        self.debugMode = True  # to simulate temp on Win/Mac
         self.displayRaspiTemp = True
         self._checkTempTimer = None
-        self.sbc = None
+        self.sbc = SBC()
         self.cmd = None
         self.cmd_name = None
 
@@ -42,9 +42,11 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             if self.sbc.is_supported and self.displayRaspiTemp:
                 self._logger.debug("Let's start RepeatedTimer!")
                 self.startTimer(30.0)
-            elif self.cmd_name:
-                self._checkTempTimer = RepeatedTimer(30.0, self.updateCustom, None, None, True)
-                self._checkTempTimer.start()
+
+        if self.cmd_name:
+            self.updateCustom()
+            self._checkTempTimer = RepeatedTimer(30.0, self.updateCustom, None, None, True)
+            self._checkTempTimer.start()
 
         # debug mode doesn't work if the OS is linux on a regular pc
         try:
