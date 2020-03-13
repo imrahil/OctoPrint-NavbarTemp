@@ -28,7 +28,6 @@ class SBCFactory(object):
             return Armbian(logger)
         elif self._is_rpi(logger):
             return RPi(logger)
-
         return SBC()
 
     def _is_rpi(self, logger):

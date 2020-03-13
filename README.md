@@ -24,4 +24,8 @@ Example:
 
 
 ## Change notes:
+v 0.14 
+- Temperature is visible, connection is no needed #47 #65
+- Fix for python 3 - #68
+v 0.13 - added support for custom commands
 v 0.11 - added support for all platforms running under Armbian

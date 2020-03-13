@@ -44,8 +44,8 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                 self.startTimer(30.0)
 
         if self.cmd_name:
-            self.updateCustom()
-            self._checkTempTimer = RepeatedTimer(30.0, self.updateCustom, None, None, True)
+            # self.updateCustom()
+            self._checkTempTimer = RepeatedTimer(30.0, self.updateCustom, run_first=True)
             self._checkTempTimer.start()
 
         # debug mode doesn't work if the OS is linux on a regular pc
@@ -55,7 +55,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             self._logger.debug("Embeded platform is not detected")
 
     def startTimer(self, interval):
-        self._checkTempTimer = RepeatedTimer(interval, self.updateSoCTemp, None, None, True)
+        self._checkTempTimer = RepeatedTimer(interval, self.updateSoCTemp, run_first=True)
         self._checkTempTimer.start()
 
     def updateSoCTemp(self):
