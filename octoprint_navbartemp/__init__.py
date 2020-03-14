@@ -1,7 +1,7 @@
 # coding=utf-8
 from __future__ import absolute_import
 
-__author__ = "Jarek Szczepanski <imrahil@imrahil.com>"
+__author__ = "Jarek Szczepanski <imrahil@imrahil.com>  & Cosik <cosik3d@gmail.com>"
 __license__ = "GNU Affero General Public License http://www.gnu.org/licenses/agpl.html"
 __copyright__ = "Copyright (C) 2014 Jarek Szczepanski - Released under terms of the AGPLv3 License"
 
@@ -65,7 +65,6 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         temp = self.sbc.checkSoCTemp()
         self._logger.debug("match: %s" % temp)
         cmd_rtv = self.getCustomResult()
-
         self._plugin_manager.send_plugin_message(self._identifier,
                                                  dict(isSupported=self.sbc.is_supported,
                                                       soctemp=temp, cmd_result=cmd_rtv, cmd_name=self.cmd_name))
