@@ -21,9 +21,10 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
     def __init__(self):
         self.piSocTypes = (["BCM2708", "BCM2709",
                             "BCM2835"])  # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
-        self.debugMode = True  # to simulate temp on Win/Mac
-        self.displayRaspiTemp = True
+        self.debugMode = False  # to simulate temp on Win/Mac
+        self.displayRaspiTemp = None
         self._checkTempTimer = None
+        self._checkCmdTimer = None
         self.sbc = SBC()
         self.cmd = None
         self.cmd_name = None
@@ -38,15 +39,17 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
         if sys.platform == "linux2":
             self.sbc = SBCFactory().factory(self._logger)
-
+            if self.debugMode:
+                self.sbc.is_supported = True
+                self.sbc.debugMode = True
             if self.sbc.is_supported and self.displayRaspiTemp:
                 self._logger.debug("Let's start RepeatedTimer!")
                 self.startTimer(30.0)
 
         if self.cmd_name:
             # self.updateCustom()
-            self._checkTempTimer = RepeatedTimer(30.0, self.updateCustom, run_first=True)
-            self._checkTempTimer.start()
+            self._checkCmdTimer = RepeatedTimer(30.0, self.updateCustom, run_first=True)
+            self._checkCmdTimer.start()
 
         # debug mode doesn't work if the OS is linux on a regular pc
         try:

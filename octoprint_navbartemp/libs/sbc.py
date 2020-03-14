@@ -44,7 +44,7 @@ class SBCFactory(object):
         if not match:
             return False
         elif match.group(1) in self.piSocTypes:
-            logger.info("Broadcom detected")
+            logger.debug("Broadcom detected")
             return True
         return False
 
@@ -64,6 +64,10 @@ class SBC(object):
     parse_pattern = ''
 
     def checkSoCTemp(self):
+        if self.debugMode:
+            import random
+            return str(round(random.uniform(5, 60), 2))
+
         if self.is_supported:
             from sarge import run, Capture
             
@@ -72,16 +76,9 @@ class SBC(object):
             p = run(self.temp_cmd, stdout=Capture())
             if p.returncode == 1:
                 self.is_supported = False
-                self._logger.info("SoC temperature not found.")
+                self._logger.debug("SoC temperature not found.")
             else:
                 p = p.stdout.text
-
-            # elif self.debugMode:  # doesn't work on linux
-            #     import random
-            #     def randrange_float(start, stop, step):
-            #         return random.randint(0, int((stop - start) / step)) * step + start
-            #
-            #     p = "temp=%s'C" % randrange_float(5, 60, 0.1)
 
             self._logger.debug("response from sarge: %s" % p)
             self._logger.debug("used pattern: %r" % self.parse_pattern)
@@ -95,6 +92,7 @@ class SBC(object):
                 self._logger.debug("match: %s" % str(temp))
 
             return temp
+
         return 0
 
     def parse_tepmerature(self, re_output):
