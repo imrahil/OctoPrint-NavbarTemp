@@ -1,4 +1,4 @@
-'''
+"""
 
 This module contain factory patter for different hardware platforms. Adding new platform is simple, first you need
 add class with inheriting from SBC. Inside you have to define differences between parent class and child. You can easily
@@ -6,16 +6,15 @@ overwrite methods and parameters. For reference please look at Armbiand and RPi 
 
 Last step is to define way of detecting platform type. It could be very different depending on OS.
 
-'''
+"""
 
 import os
 import re
 
 
 class SBCFactory(object):
-
-    piSocTypes = (["BCM2708", "BCM2709",
-                        "BCM2835"])  # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
+    # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
+    piSocTypes = (["BCM2708", "BCM2709", "BCM2835"])
 
     # Create based on class name:
     def factory(self, logger):
@@ -39,7 +38,7 @@ class SBCFactory(object):
         with open('/proc/cpuinfo', 'r') as infile:
             cpuinfo = infile.read()
         # Match a line like 'Hardware   : BCM2709'
-        match = re.search('Hardware\s+:\s+(\w+)', cpuinfo, flags=re.MULTILINE | re.IGNORECASE)
+        match = re.search(r'Hardware\s+:\s+(\w+)', cpuinfo, flags=re.MULTILINE | re.IGNORECASE)
 
         if not match:
             return False
@@ -57,22 +56,20 @@ class SBCFactory(object):
 
 
 class SBC(object):
-
     temp_cmd = ''
     is_supported = False
     debugMode = False
     parse_pattern = ''
+    _logger = None
 
-    def checkSoCTemp(self):
+    def check_soc_temp(self):
         if self.debugMode:
             import random
             return str(round(random.uniform(5, 60), 2))
 
         if self.is_supported:
             from sarge import run, Capture
-            
-            #The following generate a log entry every 30 sec, not very good to write so much to the SD card. uncomment for debugging purposes.
-            #self._logger.info("Checking SoC internal temperature")
+
             p = run(self.temp_cmd, stdout=Capture())
             if p.returncode == 1:
                 self.is_supported = False
@@ -88,14 +85,14 @@ class SBC(object):
                 self._logger.debug("match: not found")
                 self.is_supported = False
             else:
-                temp = self.parse_tepmerature(match)
+                temp = self.parse_temperature(match)
                 self._logger.debug("match: %s" % str(temp))
 
             return temp
 
         return 0
 
-    def parse_tepmerature(self, re_output):
+    def parse_temperature(self, re_output):
         return re_output.group(1)
 
 
@@ -113,10 +110,10 @@ class Armbian(SBC):
     def __init__(self, logger):
         self.is_supported = True
         self.temp_cmd = 'cat /etc/armbianmonitor/datasources/soctemp'
-        self.parse_pattern = '(\d+)'
+        self.parse_pattern = r'(\d+)'
         self._logger = logger
 
-    def parse_tepmerature(self, re_output):
+    def parse_temperature(self, re_output):
         """
         We are expecting that temp of SoC will be no more that 3 digit int. Armbian on Odroid is returning ex 44000 but
         on orangePi 26
