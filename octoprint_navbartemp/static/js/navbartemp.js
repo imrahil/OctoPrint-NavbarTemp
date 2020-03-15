@@ -4,8 +4,8 @@ $(function() {
 
         self.temperatureModel = parameters[0];
         self.global_settings = parameters[1];
-        self.socTemp = ko.observable(null);
-        self.custCmd = ko.observable(null);
+        self.socTemp = ko.observable("");
+        self.custCmd = ko.observable("");
         /*
          * raspi and awinner should be combined into something like hasSoc in the python
          * source, there's no need for this part to know or care what the sbc is made of
@@ -19,16 +19,16 @@ $(function() {
 
         self.onBeforeBinding = function () {
             self.settings = self.global_settings.settings.plugins.navbartemp;
-            console.log(self.settings);
         };
 
         self.formatBarTemperature = function(toolName, actual, target) {
             if(self.settings.useShortNames()) {
                 var name = toolName.charAt(0);
+                if(name == 'T'){
+                name = 'E';
+                }
                 if(toolName.split(" ")[1]) {
                     name += toolName.split(" ")[1];
-                }else {
-                    name += "0";
                 }
             } else {
                 var name = toolName;
@@ -47,14 +47,14 @@ $(function() {
                 return;
             }
 
-            var output = ""
             if (data.soctemp) {
-                output = _.sprintf("SoC: %.1f&deg;C", data.soctemp);
+                self.socTemp(_.sprintf("SoC: %.1f&deg;C", data.soctemp));
             }
             if (data.cmd_name) {
-                output +=  _.sprintf(" %s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result);
+                self.custCmd( _.sprintf(" %s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result));
             }
-            self.socTemp(_.sprintf(output));
+
+
         };
 
     }

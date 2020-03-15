@@ -44,11 +44,12 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                 self.sbc.debugMode = True
             if self.sbc.is_supported and self.displayRaspiTemp:
                 self._logger.debug("Let's start RepeatedTimer!")
-                self.startTimer(30.0)
+                interval = 5.0 if self.debugMode else 30.0
+                self.startTimer(interval)
 
         if self.cmd_name:
-            # self.updateCustom()
-            self._checkCmdTimer = RepeatedTimer(30.0, self.updateCustom, run_first=True)
+            interval = 5.0 if self.debugMode else 30.0
+            self._checkCmdTimer = RepeatedTimer(interval, self.updateCustom, run_first=True)
             self._checkCmdTimer.start()
 
         # debug mode doesn't work if the OS is linux on a regular pc
@@ -64,15 +65,14 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
     def updateSoCTemp(self):
         temp = self.sbc.checkSoCTemp()
         self._logger.debug("match: %s" % temp)
-        cmd_rtv = self.getCustomResult()
         self._plugin_manager.send_plugin_message(self._identifier,
                                                  dict(isSupported=self.sbc.is_supported,
-                                                      soctemp=temp, cmd_result=cmd_rtv, cmd_name=self.cmd_name))
+                                                      soctemp=temp))
 
     def updateCustom(self):
         cmd_rtv = self.getCustomResult()
         self._plugin_manager.send_plugin_message(self._identifier,
-                                                 dict(isSupported=False, cmd_result=cmd_rtv, cmd_name=self.cmd_name))
+                                                 dict(cmd_result=cmd_rtv, cmd_name=self.cmd_name))
 
     def getCustomResult(self):
         cmd_rtv = None
@@ -89,7 +89,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
     def get_settings_defaults(self):
         return dict(displayRaspiTemp=self.displayRaspiTemp,
                     piSocTypes=self.piSocTypes,
-                    cmd=self.cmd,
+                    cmd=None,
                     cmd_name=None
                     )
 
@@ -114,12 +114,13 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
     ##~~ TemplatePlugin API
     def get_template_configs(self):
         try:
-            if self.sbc.is_supported:
-                return [
-                    dict(type="settings", template="navbartemp_settings_sbc.jinja2")
-                ]
-            else:
-                return [dict(type="settings", template="navbartemp_settings.jinja2")]
+            # Todo: settings have to be fixed
+            # if self.sbc.is_supported:
+            #     return [
+            #         dict(type="settings", template="navbartemp_settings_sbc.jinja2")
+            #     ]
+            # else:
+            return [dict(type="settings", template="navbartemp_settings.jinja2")]
         except:
             return []
 
