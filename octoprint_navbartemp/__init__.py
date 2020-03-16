@@ -87,12 +87,12 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                 return ""
 
     # ~~ SettingsPlugin
-    # def get_settings_defaults(self):
-    #     return dict(displayRaspiTemp=self.displayRaspiTemp1,
-    #                 piSocTypes=self.piSocTypes,
-    #                 cmd=None,
-    #                 cmd_name=None
-    #                 )
+    def get_settings_defaults(self):
+        return dict(displayRaspiTemp=True,
+                    piSocTypes=self.piSocTypes,
+                    cmd="",
+                    cmd_name=""
+                    )
 
     def on_settings_save(self, data):
         diff = super(NavBarPlugin, self).on_settings_save(data)
@@ -110,8 +110,8 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                     except Exceptionx:
                         pass
         if "cmd" in data:
-            self.cmd = self._settings.get(["cmd"])
-            self.cmd_name = self._settings.get(["cmd_name"])
+            self.cmd = data["cmd"]
+            self.cmd_name = data["cmd_name"]
             if self.cmd:
                 interval = 5.0 if self.debugMode else 30.0
                 self.start_custom_timer(interval)
