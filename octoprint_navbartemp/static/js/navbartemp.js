@@ -53,8 +53,12 @@ $(function() {
             if (data.cmd_name) {
                 self.custCmd( _.sprintf(" %s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result));
             }
+        };
 
-
+        self.onSettingsHidden = function () {
+            if(self.settings.displayRaspiTemp() == false) {
+                self.socTemp("");
+            }
         };
 
     }

@@ -49,10 +49,8 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
         if self.cmd_name:
             interval = 5.0 if self.debugMode else 30.0
-            self._checkCmdTimer = RepeatedTimer(interval, self.update_custom, run_first=True)
-            self._checkCmdTimer.start()
+            self.start_custom_timer(interval)
 
-        # debug mode doesn't work if the OS is linux on a regular pc
         try:
             self._logger.debug("is supported? - %s" % self.sbc.is_supported)
         except Exception:
@@ -61,6 +59,10 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
     def start_soc_timer(self, interval):
         self._checkTempTimer = RepeatedTimer(interval, self.update_soc_temp, run_first=True)
         self._checkTempTimer.start()
+
+    def start_custom_timer(self, interval):
+        self._checkCmdTimer = RepeatedTimer(interval, self.update_custom, run_first=True)
+        self._checkCmdTimer.start()
 
     def update_soc_temp(self):
         temp = self.sbc.check_soc_temp()
@@ -85,30 +87,43 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                 return ""
 
     # ~~ SettingsPlugin
-    def get_settings_defaults(self):
-        return dict(displayRaspiTemp=self.displayRaspiTemp,
-                    piSocTypes=self.piSocTypes,
-                    cmd=None,
-                    cmd_name=None
-                    )
+    # def get_settings_defaults(self):
+    #     return dict(displayRaspiTemp=self.displayRaspiTemp1,
+    #                 piSocTypes=self.piSocTypes,
+    #                 cmd=None,
+    #                 cmd_name=None
+    #                 )
 
     def on_settings_save(self, data):
-        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+        diff = super(NavBarPlugin, self).on_settings_save(data)
+        self._logger.debug("data: " + str(data))
 
-        self.displayRaspiTemp = self._settings.get(["displayRaspiTemp"])
-        self.cmd = self._settings.get(["cmd"])
-        self.cmd_name = self._settings.get(["cmd_name"])
+        if "displayRaspiTemp" in data:
+            self.displayRaspiTemp = data["displayRaspiTemp"]
+            if self.displayRaspiTemp:
+                interval = 5.0 if self.debugMode else 30.0
+                self.start_soc_timer(interval)
+            else:
+                if self._checkTempTimer is not None:
+                    try:
+                        self._checkTempTimer.cancel()
+                    except Exceptionx:
+                        pass
+        if "cmd" in data:
+            self.cmd = self._settings.get(["cmd"])
+            self.cmd_name = self._settings.get(["cmd_name"])
+            if self.cmd:
+                interval = 5.0 if self.debugMode else 30.0
+                self.start_custom_timer(interval)
+            else:
+                if self._checkCmdTimer is not None:
+                    try:
+                        self._checkCmdTimer.cancel()
+                    except Exceptionx:
+                        pass
+        self._plugin_manager.send_plugin_message(self._identifier, dict())
 
-        if self.displayRaspiTemp:
-            interval = 5.0 if self.debugMode else 30.0
-            self.start_soc_timer(interval)
-        else:
-            if self._checkTempTimer is not None:
-                try:
-                    self._checkTempTimer.cancel()
-                except Exceptionx:
-                    pass
-            self._plugin_manager.send_plugin_message(self._identifier, dict())
+        return diff
 
     # ~~ TemplatePlugin API
     def get_template_configs(self):

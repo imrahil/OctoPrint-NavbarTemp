@@ -28,6 +28,7 @@ v 0.14
 - Temperature is visible, connection is no needed #47 #65
 - Fix for python 3 - #68  
 - Support for shorter tool names - #29
+- Fix for settings saving reported in #47
 
 v 0.13 
 - added support for custom commands  
