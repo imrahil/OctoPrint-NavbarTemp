@@ -22,7 +22,7 @@ $(function() {
         };
 
         self.formatBarTemperature = function(toolName, actual, target) {
-            if(self.settings.useShortNames()) {
+            if(self.settings.useShortNames == true) {
                 var name = toolName.charAt(0);
                 if(name == 'T'){
                 name = 'E';
