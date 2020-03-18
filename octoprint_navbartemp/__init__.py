@@ -91,7 +91,8 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         return dict(displayRaspiTemp=True,
                     piSocTypes=self.piSocTypes,
                     cmd="",
-                    cmd_name=""
+                    cmd_name="",
+                    useShortNames=False,
                     )
 
     def on_settings_save(self, data):
