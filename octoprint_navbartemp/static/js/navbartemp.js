@@ -33,11 +33,16 @@ $(function() {
             } else {
                 var name = toolName;
             }
-            var output = name + ": " + _.sprintf("%.1f&deg;C", actual);
+            var output = ""
 
-            if (target) {
-                var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
-                output += sign + _.sprintf("%.1f&deg;C", target);
+            if(self.settings.makeMoreRoom() == false) {
+                output = name + ": " + _.sprintf("%.1f&deg;C", actual);
+                if (target) {
+                    var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
+                    output += sign + _.sprintf("%.1f&deg;C", target);
+                }
+            } else {
+                output = name + ":" + _.sprintf("%.1f&deg;C", actual);
             }
             return output;
         };

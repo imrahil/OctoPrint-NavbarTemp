@@ -29,6 +29,7 @@ v 0.14
 - Fix for python 3 - #68  
 - Support for shorter tool names - #29
 - Fix for settings saving reported in #47
+- Added possibility to remove target temperature output #57
 
 v 0.13 
 - added support for custom commands  
