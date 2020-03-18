@@ -54,9 +54,9 @@ $(function() {
 
             if (data.soctemp) {
                 if(self.settings.makeMoreRoom() == false) {
-                    self.socTemp(_.sprintf("SoC: %.1f&deg;C", data.soctemp));
+                    self.socTemp(self.settings.soc_name() + _.sprintf(": %.1f&deg;C", data.soctemp));
                 } else {
-                    self.socTemp(_.sprintf("SoC:%.1f&deg;C", data.soctemp));
+                    self.socTemp(self.settings.soc_name() + _.sprintf(":%.1f&deg;C", data.soctemp));
                 }
             }
             if (data.cmd_name) {

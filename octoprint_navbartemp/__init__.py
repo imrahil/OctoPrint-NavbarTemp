@@ -94,6 +94,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                     cmd_name="",
                     useShortNames=False,
                     makeMoreRoom=False,
+                    soc_name="SoC",
                     )
 
     def on_settings_save(self, data):
