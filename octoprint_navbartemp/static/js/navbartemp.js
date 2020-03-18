@@ -53,7 +53,11 @@ $(function() {
             }
 
             if (data.soctemp) {
-                self.socTemp(_.sprintf("SoC: %.1f&deg;C", data.soctemp));
+                if(self.settings.makeMoreRoom() == false) {
+                    self.socTemp(_.sprintf("SoC: %.1f&deg;C", data.soctemp));
+                } else {
+                    self.socTemp(_.sprintf("SoC:%.1f&deg;C", data.soctemp));
+                }
             }
             if (data.cmd_name) {
                 self.custCmd( _.sprintf(" %s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result));
