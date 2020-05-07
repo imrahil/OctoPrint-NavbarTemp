@@ -4,14 +4,14 @@ $(function() {
 
         self.temperatureModel = parameters[0];
         self.global_settings = parameters[1];
-        self.socTemp = ko.observable(null);
-        self.custCmd = ko.observable(null);
+        self.socTemp = ko.observable("");
+        self.custCmd = ko.observable("");
         /*
          * raspi and awinner should be combined into something like hasSoc in the python
          * source, there's no need for this part to know or care what the sbc is made of
          *
          */
-        self.isSupported = ko.observable(false);
+        self.isSupported = ko.observable();
         //hassoc should be taken care of in the python source before it gets this far
         self.hasSoc = ko.pureComputed(function() {
             return self.isSupported;
@@ -22,13 +22,28 @@ $(function() {
         };
 
         self.formatBarTemperature = function(toolName, actual, target) {
-            var output = toolName + ": " + _.sprintf("%.1f&deg;C", actual);
-
-            if (target) {
-                var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
-                output += sign + _.sprintf("%.1f&deg;C", target);
+            if(self.settings.useShortNames() == true) {
+                var name = toolName.charAt(0);
+                if(name == 'T'){
+                name = 'E';
+                }
+                if(toolName.split(" ")[1]) {
+                    name += toolName.split(" ")[1];
+                }
+            } else {
+                var name = toolName;
             }
+            var output = ""
 
+            if(self.settings.makeMoreRoom() == false) {
+                output = name + ": " + _.sprintf("%.1f&deg;C", actual);
+                if (target) {
+                    var sign = (target >= actual) ? " \u21D7 " : " \u21D8 ";
+                    output += sign + _.sprintf("%.1f&deg;C", target);
+                }
+            } else {
+                output = name + ":" + _.sprintf("%.1f&deg;C", actual);
+            }
             return output;
         };
 
@@ -37,21 +52,29 @@ $(function() {
                 return;
             }
 
-            var output = ""
             if (data.soctemp) {
-                output = _.sprintf("SoC: %.1f&deg;C", data.soctemp)
+                if(self.settings.makeMoreRoom() == false) {
+                    self.socTemp(self.settings.soc_name() + _.sprintf(": %.1f&deg;C", data.soctemp));
+                } else {
+                    self.socTemp(self.settings.soc_name() + _.sprintf(":%.1f&deg;C", data.soctemp));
+                }
             }
             if (data.cmd_name) {
-                output +=  _.sprintf(" %s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result)
+                self.custCmd( _.sprintf(" %s: ", data.cmd_name) + _.sprintf("%s",data.cmd_result));
             }
-            self.socTemp(_.sprintf(output))
-
         };
+
+        self.onSettingsHidden = function () {
+            if(self.settings.displayRaspiTemp() == false) {
+                self.socTemp("");
+            }
+        };
+
     }
 
     OCTOPRINT_VIEWMODELS.push({
         construct: NavbarTempViewModel,
         dependencies: ["temperatureViewModel", "settingsViewModel"],
-        elements: ["#navbar_plugin_navbartemp", "#settings_plugin_navbartemp",]
+        elements: ["#navbar_plugin_navbartemp", "#settings_plugin_navbartemp"]
     });
 });

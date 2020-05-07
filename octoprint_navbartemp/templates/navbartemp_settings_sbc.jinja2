@@ -4,12 +4,15 @@
     <div class="control-group">
         <label class="control-label" for="settings-navbartemp-display"></label>
         <div class="controls">
-            <label class="checkbox">
+            <label class="checkboxDisplayRaspiTemp">
                 <input type="checkbox" data-bind="checked: settings.displayRaspiTemp"> Display internal temperature
+            </label>
+            <label class="checkboxUseShortNames">
+                <input type="checkbox" data-bind="checked: settings.useShortNames"> Use short tools names
+            </label>
+            <label class="makeMoreRoom">
+                <input type="checkbox" data-bind="checked: settings.makeMoreRoom"> Make more room in navbar
             </label>
         </div>
     </div>
-</form>
-<form class="form-horizontal">
-    {% include "navbartemp_settings_custom.jinja2" %}
 </form>
