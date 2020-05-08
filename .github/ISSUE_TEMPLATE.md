@@ -12,8 +12,11 @@
 **4. Print screen of plugin configuration:**
 
 
-**5. Clear problem description:**
+**5. Plugin full log file**
 
 
-**6. Expectation:**
+**6. Clear problem description::**
+
+
+**7. Expectation:**
 
