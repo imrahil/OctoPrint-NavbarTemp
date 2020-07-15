@@ -37,7 +37,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         self._logger.debug("Custom cmd name %r" % self.cmd_name)
         self._logger.debug("Custom cmd %r" % self.cmd)
 
-        if sys.platform == "linux2":
+        if sys.platform.startswith("linux"):
             self.sbc = SBCFactory().factory(self._logger)
             if self.debugMode:
                 self.sbc.is_supported = True
