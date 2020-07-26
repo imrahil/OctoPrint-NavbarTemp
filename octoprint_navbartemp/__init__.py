@@ -20,7 +20,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
     def __init__(self):
         # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
-        self.piSocTypes = (["BCM2708", "BCM2709", "BCM2835"])
+        self.piSocTypes = (["BCM2708", "BCM2709", "BCM2835", "BCM2711"])
         self.debugMode = False  # to simulate temp on Win/Mac
         self.displayRaspiTemp = None
         self._checkTempTimer = None

@@ -14,7 +14,7 @@ import re
 
 class SBCFactory(object):
     # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
-    piSocTypes = (["BCM2708", "BCM2709", "BCM2835"])
+    piSocTypes = (["BCM2708", "BCM2709", "BCM2835", "BCM2711"])
 
     # Create based on class name:
     def factory(self, logger):
