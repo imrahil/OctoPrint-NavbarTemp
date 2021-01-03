@@ -1,40 +1,70 @@
-.navbar-inner .navbar-text {
+#navbar_plugin_navbartemp .navbar-text {
   color: #333;
   text-shadow: 0 1px 0 #c8c8c8;
   cursor: default;
 }
-.navbar-inner.blue .navbar-text,
-.navbar-inner.red .navbar-text,
-.navbar-inner.orange .navbar-text,
-.navbar-inner.yellow .navbar-text,
-.navbar-inner.violet .navbar-text,
-.navbar-inner.black .navbar-text {
+/* Standars colors for styling - we have ThemeifyOff to tell us when themeify is not running*/
+.navbar-inner.blue #navbar_plugin_navbartemp.ThemeifyOff .navbar-text,
+.navbar-inner.red #navbar_plugin_navbartemp.ThemeifyOff .navbar-text,
+.navbar-inner.orange #navbar_plugin_navbartemp.ThemeifyOff .navbar-text,
+.navbar-inner.yellow #navbar_plugin_navbartemp.ThemeifyOff .navbar-text,
+.navbar-inner.violet #navbar_plugin_navbartemp.ThemeifyOff .navbar-text,
+.navbar-inner.black #navbar_plugin_navbartemp.ThemeifyOff .navbar-text{
   color: #f2f2f2;
 }
-.navbar-inner.white .navbar-text {
+.navbar-inner.white #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   color: #333;
 }
-.navbar-inner.black .navbar-text {
+.navbar-inner.black #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #5e5e5e;
 }
-.navbar-inner.white .navbar-text {
+.navbar-inner.white #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #c8c8c8;
 }
-.navbar-inner.red .navbar-text {
+.navbar-inner.red #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #d86761;
 }
-.navbar-inner.blue .navbar-text {
+.navbar-inner.blue #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #1a66ff;
 }
-.navbar-inner.green .navbar-text {
+.navbar-inner.green #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #50da00;
 }
-.navbar-inner.yellow .navbar-text {
+.navbar-inner.yellow #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #c2b00c;
 }
-.navbar-inner.orange .navbar-text {
+.navbar-inner.orange #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #f6a570;
 }
-.navbar-inner.violet .navbar-text {
+.navbar-inner.violet #navbar_plugin_navbartemp.ThemeifyOff .navbar-text {
   text-shadow: 0 1px 0 #a774ff;
 }
+
+/* themify themes */
+.themeify #navbar_plugin_navbartemp .navbar-text{
+  text-shadow: none;
+}
+.themeify.discorded #navbar_plugin_navbartemp .navbar-text {
+  color: #dadadc;
+}
+
+.themeify.material_ui_light #navbar_plugin_navbartemp .navbar-text{
+  color: #000;
+}
+
+.themeify.cyborg #navbar_plugin_navbartemp .navbar-text{
+  color: #000;
+}
+
+.themeify.discoranged #navbar_plugin_navbartemp .navbar-text{
+  color: #fc8003;
+}
+
+.themeify.dyl #navbar_plugin_navbartemp .navbar-text{
+  color: #fff;
+}
+
+.themeify.nighttime #navbar_plugin_navbartemp .navbar-text{
+  color: #bac0c6;
+}
+

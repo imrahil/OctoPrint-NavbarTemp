@@ -17,6 +17,24 @@ $(function() {
             return self.isSupported;
         });
 
+        self.onAllBound = function(){
+            // Check for themify - sadly the themeify plugin always sets the "themeify" class on html even though themes are not active so we cant use that as not selector in the css - so we use js :(
+            if (OctoPrint.coreui.viewmodels.settingsViewModel.settings.plugins.hasOwnProperty('themeify')){
+                OctoPrint.coreui.viewmodels.settingsViewModel.settings.plugins.themeify.enabled.subscribe(function(enabled) {
+                    if (enabled){
+                        $('#navbar_plugin_navbartemp').removeClass('ThemeifyOff');
+                    }else{
+                        $('#navbar_plugin_navbartemp').addClass('ThemeifyOff');
+                    }
+                });
+                if (!OctoPrint.coreui.viewmodels.settingsViewModel.settings.plugins.themeify.enabled()){
+                    $('#navbar_plugin_navbartemp').addClass('ThemeifyOff');
+                }
+            }else{
+                $('#navbar_plugin_navbartemp').addClass('ThemeifyOff');
+            }
+        }
+
         self.onBeforeBinding = function () {
             self.settings = self.global_settings.settings.plugins.navbartemp;
         };
