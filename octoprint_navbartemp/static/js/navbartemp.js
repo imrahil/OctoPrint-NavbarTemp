@@ -17,6 +17,24 @@ $(function() {
             return self.isSupported;
         });
 
+        self.onAllBound = function(){
+            // Check for themify - sadly the themeify plugin always sets the "themeify" class on html even though themes are not active so we cant use that as not selector in the css - so we use js :(
+            if (OctoPrint.coreui.viewmodels.settingsViewModel.settings.plugins.hasOwnProperty('themeify')){
+                OctoPrint.coreui.viewmodels.settingsViewModel.settings.plugins.themeify.enabled.subscribe(function(enabled) {
+                    if (enabled){
+                        $('#navbar_plugin_navbartemp').removeClass('ThemeifyOff');
+                    }else{
+                        $('#navbar_plugin_navbartemp').addClass('ThemeifyOff');
+                    }
+                });
+                if (!OctoPrint.coreui.viewmodels.settingsViewModel.settings.plugins.themeify.enabled()){
+                    $('#navbar_plugin_navbartemp').addClass('ThemeifyOff');
+                }
+            }else{
+                $('#navbar_plugin_navbartemp').addClass('ThemeifyOff');
+            }
+        }
+
         self.onBeforeBinding = function () {
             self.settings = self.global_settings.settings.plugins.navbartemp;
         };
@@ -25,7 +43,7 @@ $(function() {
             if(self.settings.useShortNames() == true) {
                 var name = toolName.charAt(0);
                 if(name == 'T'){
-                name = 'E';
+                    name = 'E';
                 }
                 if(toolName.split(" ")[1]) {
                     name += toolName.split(" ")[1];
@@ -44,6 +62,10 @@ $(function() {
             } else {
                 output = name + ":" + _.sprintf("%.1f&deg;C", actual);
             }
+            // Add fahrenheit
+            if (OctoPrint.coreui.viewmodels.settingsViewModel.appearance_showFahrenheitAlso()){
+                output += " ("+_.sprintf("%.1f&deg;F", (actual * (9/5)) + 32)+")";
+            }
             return output;
         };
 
@@ -53,10 +75,15 @@ $(function() {
             }
 
             if (data.soctemp) {
+                // Add fahrenheit
+                var fahrenheit = '';
+                if (OctoPrint.coreui.viewmodels.settingsViewModel.appearance_showFahrenheitAlso()){
+                    fahrenheit = " ("+_.sprintf("%.1f&deg;F", (data.soctemp * (9/5)) + 32)+")";
+                }
                 if(self.settings.makeMoreRoom() == false) {
-                    self.socTemp(self.settings.soc_name() + _.sprintf(": %.1f&deg;C", data.soctemp));
+                    self.socTemp(self.settings.soc_name() + _.sprintf(": %.1f&deg;C", data.soctemp)+fahrenheit);
                 } else {
-                    self.socTemp(self.settings.soc_name() + _.sprintf(":%.1f&deg;C", data.soctemp));
+                    self.socTemp(self.settings.soc_name() + _.sprintf(":%.1f&deg;C", data.soctemp)+fahrenheit);
                 }
             }
             if (data.cmd_name) {
