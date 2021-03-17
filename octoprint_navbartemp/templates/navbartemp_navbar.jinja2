@@ -1,5 +1,6 @@
 <div class="navbar-text">
-    <span id="socInfo" data-bind="attr: { title: 'System On Chip Temperature' }, html: socTemp() + custCmd(), visible: hasSoc"></span>
+    <span id="socInfo" data-bind="attr: { title: 'System On Chip Temperature' }, html: socTemp(), visible: hasSoc"></span>
+	<span id="Custom" data-bind="attr: { title: 'Custom Temperature' }, html: custCmd(), visible: hasSoc"></span>
     <!-- ko foreach: temperatureModel.tools() -->
         <span id="toolInfo" data-bind="attr: { title: name() },html: $parent.formatBarTemperature(name(),  actual(), target()),  visible: $parent.temperatureModel.hasTools() && $parent.temperatureModel.isOperational()"></span>
     <!-- /ko -->
