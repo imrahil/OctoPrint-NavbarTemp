@@ -22,7 +22,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
         self.piSocTypes = (["BCM2708", "BCM2709", "BCM2835", "BCM2711"])
         self.debugMode = False  # to simulate temp on Win/Mac
-        self.displayRaspiTemp = None
+        self.displayCpuTemp = None
         self._checkTempTimer = None
         self._checkCmdTimer = None
         self.sbc = SBC()
@@ -30,7 +30,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         self.cmd_name = None
 
     def on_after_startup(self):
-        self.displayRaspiTemp = self._settings.get(["displayRaspiTemp"])
+        self.displayCpuTemp = self._settings.get(["displayCpuTemp"])
         self.piSocTypes = self._settings.get(["piSocTypes"])
         self.cmd = self._settings.get(["cmd"])
         self.cmd_name = self._settings.get(["cmd_name"])
@@ -42,7 +42,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             if self.debugMode:
                 self.sbc.is_supported = True
                 self.sbc.debugMode = True
-            if self.sbc.is_supported and self.displayRaspiTemp:
+            if self.sbc.is_supported and self.displayCpuTemp:
                 self._logger.debug("Let's start RepeatedTimer!")
                 interval = 5.0 if self.debugMode else 30.0
                 self.start_soc_timer(interval)
@@ -88,7 +88,7 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
     # ~~ SettingsPlugin
     def get_settings_defaults(self):
-        return dict(displayRaspiTemp=True,
+        return dict(displayCpuTemp=True,
                     piSocTypes=self.piSocTypes,
                     cmd="",
                     cmd_name="",
@@ -101,9 +101,9 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         diff = super(NavBarPlugin, self).on_settings_save(data)
         self._logger.debug("data: " + str(data))
 
-        if "displayRaspiTemp" in data:
-            self.displayRaspiTemp = data["displayRaspiTemp"]
-            if self.displayRaspiTemp:
+        if "displayCpuTemp" in data:
+            self.displayCpuTemp = data["displayCpuTemp"]
+            if self.displayCpuTemp:
                 interval = 5.0 if self.debugMode else 30.0
                 self.start_soc_timer(interval)
             else:

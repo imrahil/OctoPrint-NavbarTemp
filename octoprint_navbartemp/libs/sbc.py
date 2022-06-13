@@ -27,6 +27,8 @@ class SBCFactory(object):
             return Armbian(logger)
         elif self._is_rpi(logger):
             return RPi(logger)
+        elif self._is_android(logger):
+            return Android(logger)
         return SBC()
 
     def _is_rpi(self, logger):
@@ -53,6 +55,11 @@ class SBCFactory(object):
         :return:
         """
         return os.path.exists("/etc/armbianmonitor")
+
+    def _is_android(self, logger):
+        with open('/sys/firmware/devicetree/base/model', 'r') as infile:
+            modelinfo = infile.read()
+        return "Rockchip RK" in modelinfo
 
 
 class SBC(object):
@@ -117,6 +124,30 @@ class Armbian(SBC):
         """
         We are expecting that temp of SoC will be no more that 3 digit int. Armbian on Odroid is returning ex 44000 but
         on orangePi 26
+        :param re_output:
+        :return:
+        """
+        # TODO: depending on situation in the future maybe it will be necessary to split it.
+        temp = re_output.group(1)
+        if len(temp) == 2 or len(temp) == 3:
+            return float(temp)
+        elif len(temp) >= 4:
+            return float(re_output.group(1)) / 1000
+
+        return float(re_output.group(1))
+
+
+class Android(SBC):
+
+    def __init__(self, logger):
+        self.is_supported = True
+        self.temp_cmd = 'cat /sys/devices/virtual/thermal/thermal_zone0/temp'
+        self.parse_pattern = r'(\d+)'
+        self._logger = logger
+
+    def parse_temperature(self, re_output):
+        """
+        We are expecting that temp of SoC will be no more that 3 digit int.
         :param re_output:
         :return:
         """
