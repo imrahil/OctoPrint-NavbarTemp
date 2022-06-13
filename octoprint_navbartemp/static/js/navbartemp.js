@@ -92,7 +92,7 @@ $(function() {
         };
 
         self.onSettingsHidden = function () {
-            if(self.settings.displayRaspiTemp() == false) {
+            if(self.settings.displayCpuTemp() == false) {
                 self.socTemp("");
             }
         };
