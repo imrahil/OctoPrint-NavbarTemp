@@ -14,7 +14,7 @@ import re
 
 class SBCFactory(object):
     # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
-    piSocTypes = (["BCM2708", "BCM2709", "BCM2835", "BCM2711"])
+    piSocTypes = ["BCM2708", "BCM2709", "BCM2835", "BCM2711"]
 
     # Create based on class name:
     def factory(self, logger):
@@ -35,10 +35,12 @@ class SBCFactory(object):
         :param logger:
         :return:
         """
-        with open('/proc/cpuinfo', 'r') as infile:
+        with open("/proc/cpuinfo", "r") as infile:
             cpuinfo = infile.read()
         # Match a line like 'Hardware   : BCM2709'
-        match = re.search(r'Hardware\s+:\s+(\w+)', cpuinfo, flags=re.MULTILINE | re.IGNORECASE)
+        match = re.search(
+            r"Hardware\s+:\s+(\w+)", cpuinfo, flags=re.MULTILINE | re.IGNORECASE
+        )
 
         if not match:
             return False
@@ -56,19 +58,20 @@ class SBCFactory(object):
 
 
 class SBC(object):
-    temp_cmd = ''
+    temp_cmd = ""
     is_supported = False
     debugMode = False
-    parse_pattern = ''
+    parse_pattern = ""
     _logger = None
 
     def check_soc_temp(self):
         if self.debugMode:
             import random
+
             return str(round(random.uniform(5, 60), 2))
 
         if self.is_supported:
-            from sarge import run, Capture
+            from sarge import Capture, run
 
             p = run(self.temp_cmd, stdout=Capture())
             if p.returncode == 1:
@@ -97,20 +100,18 @@ class SBC(object):
 
 
 class RPi(SBC):
-
     def __init__(self, logger):
         self.is_supported = True
-        self.temp_cmd = '/opt/vc/bin/vcgencmd measure_temp'
-        self.parse_pattern = '=(.*)\''
+        self.temp_cmd = "/opt/vc/bin/vcgencmd measure_temp"
+        self.parse_pattern = "=(.*)'"
         self._logger = logger
 
 
 class Armbian(SBC):
-
     def __init__(self, logger):
         self.is_supported = True
-        self.temp_cmd = 'cat /etc/armbianmonitor/datasources/soctemp'
-        self.parse_pattern = r'(\d+)'
+        self.temp_cmd = "cat /etc/armbianmonitor/datasources/soctemp"
+        self.parse_pattern = r"(\d+)"
         self._logger = logger
 
     def parse_temperature(self, re_output):

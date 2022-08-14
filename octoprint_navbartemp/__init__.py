@@ -1,26 +1,29 @@
-# coding=utf-8
 from __future__ import absolute_import
 
 __author__ = "Jarek Szczepanski <imrahil@imrahil.com>  & Cosik <cosik3d@gmail.com>"
 __license__ = "GNU Affero General Public License http://www.gnu.org/licenses/agpl.html"
-__copyright__ = "Copyright (C) 2014 Jarek Szczepanski - Released under terms of the AGPLv3 License"
+__copyright__ = (
+    "Copyright (C) 2014 Jarek Szczepanski - Released under terms of the AGPLv3 License"
+)
+
+import os
+import sys
 
 import octoprint.plugin
 from octoprint.util import RepeatedTimer
-import sys
-import os
 
-from .libs.sbc import SBCFactory, SBC
+from .libs.sbc import SBC, SBCFactory
 
 
-class NavBarPlugin(octoprint.plugin.StartupPlugin,
-                   octoprint.plugin.TemplatePlugin,
-                   octoprint.plugin.AssetPlugin,
-                   octoprint.plugin.SettingsPlugin):
-
+class NavBarPlugin(
+    octoprint.plugin.StartupPlugin,
+    octoprint.plugin.TemplatePlugin,
+    octoprint.plugin.AssetPlugin,
+    octoprint.plugin.SettingsPlugin,
+):
     def __init__(self):
         # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
-        self.piSocTypes = (["BCM2708", "BCM2709", "BCM2835", "BCM2711"])
+        self.piSocTypes = ["BCM2708", "BCM2709", "BCM2835", "BCM2711"]
         self.debugMode = False  # to simulate temp on Win/Mac
         self.displayRaspiTemp = None
         self._checkTempTimer = None
@@ -57,24 +60,29 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
             self._logger.debug("Embeded platform is not detected")
 
     def start_soc_timer(self, interval):
-        self._checkTempTimer = RepeatedTimer(interval, self.update_soc_temp, run_first=True)
+        self._checkTempTimer = RepeatedTimer(
+            interval, self.update_soc_temp, run_first=True
+        )
         self._checkTempTimer.start()
 
     def start_custom_timer(self, interval):
-        self._checkCmdTimer = RepeatedTimer(interval, self.update_custom, run_first=True)
+        self._checkCmdTimer = RepeatedTimer(
+            interval, self.update_custom, run_first=True
+        )
         self._checkCmdTimer.start()
 
     def update_soc_temp(self):
         temp = self.sbc.check_soc_temp()
         self._logger.debug("match: %s" % temp)
-        self._plugin_manager.send_plugin_message(self._identifier,
-                                                 dict(isSupported=self.sbc.is_supported,
-                                                      soctemp=temp))
+        self._plugin_manager.send_plugin_message(
+            self._identifier, dict(isSupported=self.sbc.is_supported, soctemp=temp)
+        )
 
     def update_custom(self):
         cmd_rtv = self.get_custom_result()
-        self._plugin_manager.send_plugin_message(self._identifier,
-                                                 dict(cmd_result=cmd_rtv, cmd_name=self.cmd_name))
+        self._plugin_manager.send_plugin_message(
+            self._identifier, dict(cmd_result=cmd_rtv, cmd_name=self.cmd_name)
+        )
 
     def get_custom_result(self):
         if self.cmd:
@@ -88,14 +96,15 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
 
     # ~~ SettingsPlugin
     def get_settings_defaults(self):
-        return dict(displayRaspiTemp=True,
-                    piSocTypes=self.piSocTypes,
-                    cmd="",
-                    cmd_name="",
-                    useShortNames=False,
-                    makeMoreRoom=False,
-                    soc_name="SoC",
-                    )
+        return dict(
+            displayRaspiTemp=True,
+            piSocTypes=self.piSocTypes,
+            cmd="",
+            cmd_name="",
+            useShortNames=False,
+            makeMoreRoom=False,
+            soc_name="SoC",
+        )
 
     def on_settings_save(self, data):
         diff = super(NavBarPlugin, self).on_settings_save(data)
@@ -146,13 +155,12 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
         return {
             "js": ["js/navbartemp.js"],
             "css": ["css/navbartemp.css"],
-            "less": ["less/navbartemp.less"]
+            "less": ["less/navbartemp.less"],
         }
 
     # ~~ Softwareupdate hook
     def get_update_information(self):
         return dict(
-
             navbartemp=dict(
                 displayName="Navbar Temperature Plugin",
                 displayVersion=self._plugin_version,
@@ -161,9 +169,8 @@ class NavBarPlugin(octoprint.plugin.StartupPlugin,
                 user="imrahil",
                 repo="OctoPrint-NavbarTemp",
                 current=self._plugin_version,
-
                 # update method: pip w/ dependency links
-                pip="https://github.com/imrahil/OctoPrint-NavbarTemp/archive/{target_version}.zip"
+                pip="https://github.com/imrahil/OctoPrint-NavbarTemp/archive/{target_version}.zip",
             )
         )
 

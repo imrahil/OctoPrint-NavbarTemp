@@ -1,0 +1,10 @@
+parserOptions:
+  ecmaVersion: 2018
+
+overrides:
+  - files:
+      - "octoprint_navbartemp/static/js/**.js"
+    env:
+      browser: true
+      jquery: true
+      es6: true
