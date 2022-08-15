@@ -102,7 +102,7 @@ class SBC(object):
 class RPi(SBC):
     def __init__(self, logger):
         self.is_supported = True
-        self.temp_cmd = "/opt/vc/bin/vcgencmd measure_temp"
+        self.temp_cmd = "/usr/bin/vcgencmd measure_temp"
         self.parse_pattern = "=(.*)'"
         self._logger = logger
 
