@@ -53,8 +53,24 @@ def params():
 	# this plugin is not zip_safe.
 	zip_safe = False
 
-	# Read the requirements from our requirements.txt file
-	install_requires = open("requirements.txt").read().split("\n")
+	# Requirements
+	install_requires = ['OctoPrint']
+
+    # Additional requirements for optional install options and/or OS-specific dependencies
+	extras_require = {
+			# Dependencies for development
+			"develop": [
+				# Testing dependencies
+				"ddt",
+				"mock>=4,<5",
+				"pytest-doctest-custom>=1.0.0,<2",
+				"pytest>=6.2.5,<7",
+				# pre-commit
+				"pre-commit",
+				# profiler
+				"pyinstrument",
+				],
+			}
 
 	# Hook the plugin into the "octoprint.plugin" entry point, mapping the plugin_identifier to the plugin_package.
 	# That way OctoPrint will be able to find the plugin and load it.
