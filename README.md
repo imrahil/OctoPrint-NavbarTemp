@@ -24,6 +24,14 @@ Example:
 
 
 ## Change notes:
+v 0.15
+- Fix few exceptions
+- Themify support added Also made the CSS safe from conflicting with other elements
+- Hide tools temps when not active https://github.com/imrahil/OctoPrint-NavbarTemp/issues/80
+- Fahrenheit display added https://github.com/imrahil/OctoPrint-NavbarTemp/issues/63 https://github.com/imrahil/OctoPrint-NavbarTemp/issues/37
+- Add BCM2711 as supported SoC
+- Consolidate vcgencmd path between versions
+
 v 0.14
 - Temperature is visible, connection is no needed #47 #65
 - Fix for python 3 - #68
