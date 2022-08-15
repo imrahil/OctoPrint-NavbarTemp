@@ -119,7 +119,7 @@ class NavBarPlugin(
                 if self._checkTempTimer is not None:
                     try:
                         self._checkTempTimer.cancel()
-                    except Exceptionx:
+                    except Exception:
                         pass
         if "cmd" in data:
             self.cmd = data["cmd"]
@@ -131,7 +131,7 @@ class NavBarPlugin(
                 if self._checkCmdTimer is not None:
                     try:
                         self._checkCmdTimer.cancel()
-                    except Exceptionx:
+                    except Exception:
                         pass
         self._plugin_manager.send_plugin_message(self._identifier, dict())
 
