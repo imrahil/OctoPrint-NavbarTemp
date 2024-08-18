@@ -25,6 +25,8 @@ class SBCFactory(object):
         """
         if self._is_armbian():
             return Armbian(logger)
+        elif self._is_ubuntu(logger):
+            return Ubuntu(logger)
         elif self._is_rpi(logger):
             return RPi(logger)
         return SBC()
@@ -43,6 +45,13 @@ class SBCFactory(object):
         )
 
         if not match:
+            # try Orange PI
+            with open("/proc/device-tree/model", "r") as infile:
+                cpuinfo = infile.read()
+                if cpuinfo.beginswith("OrangePi"):
+                    logger.debug("OrangePi detected")
+                    return True
+
             return False
         elif match.group(1) in self.piSocTypes:
             logger.debug("Broadcom detected")
@@ -55,6 +64,13 @@ class SBCFactory(object):
         :return:
         """
         return os.path.exists("/etc/armbianmonitor")
+
+    def _is_ubuntu(self, logger):
+        """
+        Detecting ubuntu (on Orange PI) - checking if sensors monitor exist
+        :return:
+        """
+        return os.path.exists("/bin/sensors")
 
 
 class SBC(object):
@@ -129,3 +145,21 @@ class Armbian(SBC):
             return float(re_output.group(1)) / 1000
 
         return float(re_output.group(1))
+
+
+class Ubuntu(SBC):
+    def __init__(self, logger):
+        self.is_supported = True
+        self.temp_cmd = "/bin/sensors"
+        # temp1:        +49.4°C  (crit = +100.0°C)
+        self.parse_pattern = r"temp1:[\s]+(.*)°C\s"
+        self._logger = logger
+
+
+    def parse_temperature(self, re_output):
+        """
+        On Ubuntu  the sensors return temperatura as +49.4
+        """
+        return float(re_output.group(1))        
+        
+        
