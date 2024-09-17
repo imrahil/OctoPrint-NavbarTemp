@@ -4,4 +4,5 @@
         <span id="toolInfo" data-bind="attr: { title: name() },html: $parent.formatBarTemperature(name(),  actual(), target()),  visible: $parent.temperatureModel.hasTools() && $parent.temperatureModel.isOperational()"></span>
     <!-- /ko -->
     <span id="bedInfo" data-bind="attr: { title: 'Bed' }, html: formatBarTemperature(temperatureModel.bedTemp.name(), temperatureModel.bedTemp.actual(), temperatureModel.bedTemp.target()), visible: temperatureModel.hasBed() && temperatureModel.isOperational()"></span>
+    <span id="chamberInfo" data-bind="attr: { title: 'Chamber' }, html: formatBarTemperature(temperatureModel.chamberTemp.name(), temperatureModel.chamberTemp.actual(), temperatureModel.chamberTemp.target()), visible: temperatureModel.hasChamber() && temperatureModel.isOperational()"></span>
 </div>
