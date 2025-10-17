@@ -14,7 +14,7 @@ import re
 
 class SBCFactory(object):
     # Array of raspberry pi SoC's to check against, saves having a large if/then statement later
-    piSocTypes = ["BCM2708", "BCM2709", "BCM2835", "BCM2711"]
+    piSocTypes = ["BCM2708", "BCM2709", "BCM2835", "BCM2711", "BCM2712"]
 
     # Create based on class name:
     def factory(self, logger):
@@ -42,11 +42,21 @@ class SBCFactory(object):
             r"Hardware\s+:\s+(\w+)", cpuinfo, flags=re.MULTILINE | re.IGNORECASE
         )
 
-        if not match:
-            return False
-        elif match.group(1) in self.piSocTypes:
-            logger.debug("Broadcom detected")
+        if match and match.group(1) in self.piSocTypes:
+            logger.debug("Broadcom detected: %r" % match.group(1))
             return True
+        
+        with open("/proc/device-tree/compatible", "r") as infile:
+            cpuinfo = infile.read()
+        # Match a line like 'raspberrypi,5-model-bbrcm,bcm2712'
+        match = re.search(
+            r"^(?:[^,]*,){2}([^,\W]+)", cpuinfo, flags=re.MULTILINE | re.IGNORECASE
+        )
+
+        if match and match.group(1).upper() in self.piSocTypes:
+            logger.debug("Broadcom detected: %r" % match.group(1).upper())
+            return True
+
         return False
 
     def _is_armbian(self):
